@@ -110,6 +110,18 @@
 
         </div>
     </div>
+    <h4>ser2net Control</h4>
+     <div class="row">
+        <div class="col-sm-6">
+            <button id="ser2net_command" onClick="toggleSer2Net()" class="btn btn-default"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Start</button>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>Ser2Net Status</label>
+                <div id="ser2net_notify" class="well"></div>
+            </div>
+        </div>
+    </div>
 
    </div>
 </div>

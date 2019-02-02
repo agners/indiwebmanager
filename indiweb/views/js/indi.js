@@ -306,3 +306,46 @@ function restartDriver(label) {
             }
         });
  }
+
+function toggleSer2Net() {
+    var status = $.trim($("#ser2net_command").text());
+
+    if (status == "Start") {
+        $.ajax({
+            type: 'POST',
+            url: "/api/ser2net/start",
+            success: function() {
+                //console.log("INDI Server started!");
+                getSer2NetStatus();
+            },
+            error: function() {
+                alert('Failed to start ser2net server.');
+            }
+        });
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: "/api/ser2net/stop",
+            success: function() {
+                //console.log("INDI Server stopped!");
+                getSer2NetStatus();
+            },
+            error: function() {
+                alert('Failed to stop ser2net server.');
+            }
+        });
+    }
+}
+
+function getSer2NetStatus() {
+    $.getJSON("/api/ser2net/status", function(data) {
+        if (data[0].status == "True") {
+            $("#ser2net_command").html("<span class='glyphicon glyphicon-cog' aria-hidden='true'></span>Stop");
+            $("#ser2net_notify").html("<p class='alert alert-info'>Ser2Net is online.</p>");
+        } else {
+            $("#ser2net_command").html("<span class='glyphicon glyphicon-cog' aria-hidden='true'></span>Start");
+            $("#ser2net_notify").html("<p class='alert alert-success'>Ser2Net is offline.</p>");
+        }
+
+    });
+}

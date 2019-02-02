@@ -10,6 +10,7 @@ from bottle import Bottle, run, template, static_file, request, response, BaseRe
 from .indi_server import IndiServer, INDI_PORT, INDI_FIFO, INDI_CONFIG_DIR
 from .driver import DeviceDriver, DriverCollection, INDI_DATA_DIR
 from .database import Database
+from .ser2net import Ser2Net
 
 # default settings
 WEB_HOST = '0.0.0.0'
@@ -65,6 +66,7 @@ logging.debug("command line arguments: " + str(vars(args)))
 
 collection = DriverCollection(args.xmldir)
 indi_server = IndiServer(args.fifo, args.conf)
+ser2net = Ser2Net()
 
 db_path = os.path.join(args.conf, 'profiles.db')
 db = Database(db_path)
@@ -257,7 +259,6 @@ def stop_server():
     if saved_profile:
         saved_profile = request.get_cookie("indiserver_profile") or "Simulators"
 
-
 ###############################################################################
 # Driver endpoints
 ###############################################################################
@@ -301,6 +302,25 @@ def restart_driver(label):
     indi_server.start_driver(driver)
     logging.info('Driver "%s" restarted.' % label)
 
+###############################################################################
+# Ser2Net endpoints
+###############################################################################
+
+@app.post('/api/ser2net/start')
+def start_ser2net():
+    """Start ser2net"""
+    ser2net.start()
+
+@app.post('/api/ser2net/stop')
+def stop_ser2net():
+    """Stop ser2net"""
+    ser2net.stop()
+
+@app.get('/api/ser2net/status')
+def get_ser2net_status():
+    """Ser2Net status"""
+    status = [{'status': str(ser2net.is_running())}]
+    return json.dumps(status)
 
 ###############################################################################
 # Startup standalone server
