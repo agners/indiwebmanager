@@ -5,7 +5,7 @@ INDI Web Manager is a simple Web Application to manage
 along with optional custom remote drivers. It can be used to start INDI server
 locally, and also to connect or **chain** to remote INDI servers.
 
-![INDI Web Manager](http://indilib.org/images/indi/indiwebmanager.png)
+![INDI Web Manager](indiwebmanager.png)
 
 The Web Application is based on [Bottle Py](http://bottlepy.org)
 micro-framework. It has a built-in webserver and by default listens on port
